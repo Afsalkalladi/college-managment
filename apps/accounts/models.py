@@ -30,6 +30,10 @@ class TeacherProfile(models.Model):
     qualification = models.CharField(max_length=200)
     specialization = models.CharField(max_length=200)
     joined_date = models.DateField(auto_now_add=True)
+    experience_years = models.PositiveIntegerField(default=0)
+    phone_number = models.CharField(max_length=15, blank=True)
+    address = models.TextField(blank=True)
+
     
     def __str__(self):
         return f"Teacher: {self.user.username}"
@@ -41,6 +45,10 @@ class StudentProfile(models.Model):
     current_semester = models.IntegerField(default=1)
     phone_number = models.CharField(max_length=15, blank=True)
     address = models.TextField(blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    guardian_name = models.CharField(max_length=100, blank=True)
+    guardian_phone = models.CharField(max_length=15, blank=True)
+    guardian_email = models.EmailField(blank=True)
     
     def __str__(self):
         return f"Student: {self.user.username} - {self.roll_number}"

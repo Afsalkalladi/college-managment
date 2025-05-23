@@ -1,0 +1,43 @@
+
+<!-- ================================================== -->
+<!-- templates/teachers/resource_form.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{{ title }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Note:</strong> You can either upload a file OR provide an external link, but not both.
+                            Maximum file size: 10MB.
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'teachers:resource_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Resource
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Subject Resources - Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Subject Resources - {{ current_semester.name }}</h2>
+
+            <!-- Search and Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Search resources..." value="{{ search_query }}">
+                        </div>
+                        <div class="col-md-3">
+                            <select name="subject" class="form-control">
+                                <option value="">All Subjects</option>
+                                {% for subject in enrolled_subjects %}
+                                    <option value="{{ subject.id }}" 
+                                            {% if subject.id|stringformat:"s" == selected_subject %}selected{% endif %}>
+                                        {{ subject.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="type" class="form-control">
+                                <option value="">All Types</option>
+                                {% for type_code, type_name in resource_types %}
+                                    <option value="{{ type_code }}" 
+                                            {% if type_code == selected_type %}selected{% endif %}>
+                                        {{ type_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-secondary w-100">Filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Resources by Subject -->
+            {% if resources_by_subject %}
+                {% for subject_name, resources in resources_by_subject.items %}
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">{{ subject_name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% for resource in resources %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">{{ resource.title }}</h6>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        By {{ resource.teacher.user.get_full_name|default:resource.teacher.user.username }}
+                                                        <br>
+                                                        {{ resource.uploaded_at|date:"M d, Y" }}
+                                                    </small>
+                                                </p>
+                                                {% if resource.description %}
+                                                    <p class="card-text">{{ resource.description|truncatewords:20 }}</p>
+                                                {% endif %}
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-info">{{ resource.get_resource_type_display }}</span>
+                                                    {% if resource.file %}
+                                                        <a href="{% url 'students:resource_download' resource.pk %}" 
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-download"></i> Download
+                                                        </a>
+                                                    {% elif resource.external_link %}
+                                                        <a href="{{ resource.external_link }}" target="_blank" 
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-external-link-alt"></i> Open
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="card">
+                    <div class="card-body text-center">
+                        <p>No resources available for your enrolled subjects.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
