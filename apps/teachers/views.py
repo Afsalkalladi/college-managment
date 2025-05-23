@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import TeacherResource, TeacherAssignment
 from .forms import TeacherResourceForm
-from academics.models import AcademicYear
+from apps.academics.models import AcademicYear
 
 @login_required
 def teacher_resource_list(request):

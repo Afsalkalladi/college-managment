@@ -1,6 +1,6 @@
 from django import forms
 from .models import TeacherResource
-from academics.models import Subject, AcademicYear
+from apps.academics.models import Subject, AcademicYear
 
 class TeacherResourceForm(forms.ModelForm):
     class Meta:

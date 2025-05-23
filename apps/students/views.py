@@ -4,9 +4,9 @@ from django.contrib import messages
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
 from django.db.models import Q
-from teachers.models import TeacherResource
+from apps.teachers.models import TeacherResource
 from .models import StudentEnrollment, StudentSubjectEnrollment
-from academics.models import AcademicYear
+from apps.academics.models import AcademicYear
 import mimetypes
 import os
 
